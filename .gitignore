@@ -1,5 +1,6 @@
 *.txt
 *.docx
+*.exe
 
 main_test.exe
 .vscode
