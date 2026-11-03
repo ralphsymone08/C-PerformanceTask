@@ -4,7 +4,7 @@
  Leader: Ralph Symone Manlangit
  Members: Trisha Jade Galimba
           Chris Benedict Pagbilao
-          Christian Tuasoc
+          Lhinz Christian Tuasoc
           June Arvi Batoctoy
 
  Date: October 31, 2026
