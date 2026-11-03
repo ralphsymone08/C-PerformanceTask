@@ -9,6 +9,8 @@
 
  Date: October 31, 2026
 
+ Purpose: To create a system that checks the grade of a student based on their scores
+          The grading system used is inspired by our CCS 102 class
 */
 
 #include <stdio.h>
@@ -75,6 +77,7 @@ int main(void) {
             default:
                 // Handles invalid menu selections
                 printf("Invalid selection.\n");
+                break;
         }
     } while (choice != 3);
 
@@ -97,8 +100,8 @@ int getMenuChoice(void) {
     // This function gets the user's menu choice (to be processed in main)
     int choice;
     if (scanf("%d", &choice) != 1) {
-        while (getchar() != '\n');
-        choice = 0;
+        while (getchar() != '\n'); // Clear the input buffer
+        return -1; // Return an invalid choice
     }
     return choice;
 }
@@ -135,15 +138,13 @@ float getCategoryPercentage(const char categoryName[]) {
     // Gathers all the scores of a certain activity
     // Calculates the percentage of that activity
     int count;
-    float earned;
-    float possible;
-    float totalEarned = 0.0f;
-    float totalPossible = 0.0f;
+    float earned, possible, totalEarned = 0.0f, totalPossible = 0.0f;
 
     // Asks the user how many activities they have in a certain category
     // Serves as the number of times the system loops to gather all the scores
     do {
         printf("How many %s do you have? ", categoryName);
+        // Handles input that is not an integer
         if (scanf("%d", &count) != 1) {
             printf("Invalid input. Please enter a positive integer.\n");
             while (getchar() != '\n');
@@ -152,10 +153,10 @@ float getCategoryPercentage(const char categoryName[]) {
     } while (count <= 0);
 
     // Arrays in which all scores will be stored for later calculations
-    float earnedScores[count];
-    float highestPossibleScores[count];
+    float earnedScores[count], highestPossibleScores[count];
 
     // Main loop engine
+    // Loops until all scores are collected
     for (int i = 0; i < count; i++) {
         int valid = 0;
         do {
@@ -257,17 +258,31 @@ float calculateOverallGrade(float midtermGrade, float finalGrade) {
 
 float convertToCollegeGrade(float overallPercentage) {
     // Converts the 0-based percentage to a 5.00-based college grade
-    if (overallPercentage > 100.0f || overallPercentage < 0.0f) return -1.0f;
-    if (overallPercentage >= 97.0f) return 1.00f;
-    else if (overallPercentage >= 94.0f) return 1.25f;
-    else if (overallPercentage >= 91.0f) return 1.50f;
-    else if (overallPercentage >= 88.0f) return 1.75f;
-    else if (overallPercentage >= 85.0f) return 2.00f;
-    else if (overallPercentage >= 82.0f) return 2.25f;
-    else if (overallPercentage >= 79.0f) return 2.50f;
-    else if (overallPercentage >= 76.0f) return 2.75f;
-    else if (overallPercentage >= 75.0f) return 3.00f;
-    else return 5.00f;
+    if (overallPercentage > 100.0f || overallPercentage < 0.0f) {
+        return -1.0f;
+    }
+    
+    if (overallPercentage >= 97.0f) {
+        return 1.00f;
+    } else if (overallPercentage >= 94.0f) {
+        return 1.25f;
+    } else if (overallPercentage >= 91.0f) {
+        return 1.50f;
+    } else if (overallPercentage >= 88.0f) {
+        return 1.75f;
+    } else if (overallPercentage >= 85.0f) {
+        return 2.00f;
+    } else if (overallPercentage >= 82.0f) {
+        return 2.25f;
+    } else if (overallPercentage >= 79.0f) {
+        return 2.50f;
+    } else if (overallPercentage >= 76.0f) {
+        return 2.75f;
+    } else if (overallPercentage >= 75.0f) {
+        return 3.00f;
+    } else {
+        return 5.00f;
+    }
 }
 
 char determineRemark(float overallPercentage) {
@@ -291,3 +306,42 @@ void displayResults(float midtermGrade, float finalGrade, float overallPercentag
     printf("Final Remark       : %s\n", (remark == 'P') ? "PASSED" : "FAILED");
     printf("\n========================================\n");
 }
+
+/*
+    Sample Test Case:
+        1. 
+            Midterm Period:
+                Quizzes: 2 assessments
+                    Assessment 1 HPS: 10
+                    Assessment 1 Earned Score: 9
+                    Assessment 2 HPS: 10
+                    Assessment 2 Earned Score: 8
+                Activities: 2 assessments
+                    Assessment 1 HPS: 20
+                    Assessment 1 Earned Score: 18
+                    Assessment 2 HPS: 20
+                    Assessment 2 Earned Score: 19
+                Major Exams: 1 assessment
+                    Assessment 1 HPS: 50
+                    Assessment 1 Earned Score: 45
+                Performance Tasks: 1 assessment
+                    Assessment 1 HPS: 100
+                    Assessment 1 Earned Score: 90
+            Final Period:
+                Quizzes: 2 assessments
+                    Assessment 1 HPS: 10
+                    Assessment 1 Earned Score: 10
+                    Assessment 2 HPS: 10
+                    Assessment 2 Earned Score: 9
+                Activities: 2 assessments
+                    Assessment 1 HPS: 20
+                    Assessment 1 Earned Score: 20  
+                    Assessment 2 HPS: 20
+                    Assessment 2 Earned Score: 19
+                Major Exams: 1 assessment
+                    Assessment 1 HPS: 50
+                    Assessment 1 Earned Score: 48
+                Performance Tasks: 1 assessment
+                    Assessment 1 HPS: 100
+                    Assessment 1 Earned Score: 95 
+*/
